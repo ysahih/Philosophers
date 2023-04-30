@@ -7,12 +7,12 @@
 # include <stdlib.h>
 # include <pthread.h>
 #include <time.h>
-
+#include <stdbool.h>
 
 typedef struct	s_data
 {
 	int 			nb_philo;
-	int				 to_die;
+	int				to_die;
 	int 			to_eat;
 	int 			to_sleep;
 	int 			nb_eat;

@@ -47,12 +47,17 @@ int	init(t_data *rules, int ac, char **av)
 
 void*	routine(void* arg)
 {
-	if (!arg)
-		return 0 ;
-	t_philo *philo;
-	philo  = (t_philo *)arg;
-	printf("%d\n",philo->id[4]);
-	// (void *)i;
+	// if (!arg)
+	// 	return 0 ;
+	// t_philo *philo;
+	// philo  = (t_philo *)arg;
+	// printf("%d\n",philo->fork[1]);
+	// // (void *)i;
+
+	while (true)
+	{
+		printf("")
+	}
 	return NULL;
 }
 
