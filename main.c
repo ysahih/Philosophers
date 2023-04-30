@@ -52,13 +52,13 @@ void*	routine(void* arg)
 	// t_philo *philo;
 	// philo  = (t_philo *)arg;
 	// printf("%d\n",philo->fork[1]);
-	// // (void *)i;
+	// // (void *)i; 
 
-	while (true)
-	{
-		printf("")
-	}
-	return NULL;
+	// while (true)
+	// {
+	// 	printf("")
+	// }
+	// return NULL;
 }
 
 int	create_threads(t_data *rules)
