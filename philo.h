@@ -2,9 +2,12 @@
 #define PHILO_H
 
 # include <stdio.h>
+#include <unistd.h>
+# include <string.h>
 # include <stdlib.h>
 # include <pthread.h>
-# include <string.h>
+#include <time.h>
+
 
 typedef struct	s_data
 {
@@ -21,9 +24,9 @@ typedef struct	s_data
 
 typedef struct s_philo
 {
-	int			id;
-	int			fork;
-	pthread_t	t;
+	int			id[200];
+	int			fork[200];
+	pthread_t	t[200];
 	t_data		*info;
 
 } t_philo;

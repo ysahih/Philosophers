@@ -1,5 +1,7 @@
 #include "philo.h"
 
+void *i = "A";
+
 
 int	init_mutex(t_data *rules)
 {
@@ -20,9 +22,10 @@ void	init_philos(t_data *rules)
 	i = rules->nb_philo;
 	while (i--)
 	{
-		rules->philo->id = i;
+		
+		rules->philo->id[i] = i;
 		rules->philo->info = rules;
-		rules->philo->fork = i;
+		rules->philo->fork[i] = i;
 	}
 }
 
@@ -42,24 +45,28 @@ int	init(t_data *rules, int ac, char **av)
 
 
 
-void	routine(void *philo)
+void*	routine(void* arg)
 {
-	void *s;
-	s = "hello";
-	printf("%s\n", s);
-	// return s;
+	if (!arg)
+		return 0 ;
+	t_philo *philo;
+	philo  = (t_philo *)arg;
+	printf("%d\n",philo->id[4]);
+	// (void *)i;
+	return NULL;
 }
 
 int	create_threads(t_data *rules)
 {
 	int	i;
 	i = rules->philo->info->nb_philo;
+	// rules->philo->id = 10;
 	while (i--)
-		if (pthread_create(&rules->philo->t, NULL, &routine, rules->philo))
+		if (pthread_create(&rules->philo->t[i], NULL, &routine, rules->philo))
 			return (1);
 	i = rules->philo->info->nb_philo;
 	while (i--)
-		if (pthread_join(rules->philo->t, NULL))
+		if (pthread_join(rules->philo->t[i], (void *)rules->philo))
 			return (1);
 	return (0);
 }
@@ -72,6 +79,9 @@ int	main(int ac, char **av)
 		return (ft_error(),0);
 	if (!init(&rules, ac, av))
 		return (ft_error(),0);
+	// for (int i = 0; i < 5; i++)
+	// 	printf("%d\n", rules.philo->id[i]);
+	create_threads(&rules);
 	
 	// printf("%d\n", rules.nb_philo);
 	// rules.nb_philo
