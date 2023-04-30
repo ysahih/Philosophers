@@ -1,6 +1,6 @@
 #include "philo.h"
 
-void *i = "A";
+int i = 0;
 
 
 int	init_mutex(t_data *rules)
@@ -14,6 +14,7 @@ int	init_mutex(t_data *rules)
 		return (1);
 	return (0);
 }
+
 void	init_philos(t_data *rules)
 {
 	int	i;
@@ -22,10 +23,9 @@ void	init_philos(t_data *rules)
 	i = rules->nb_philo;
 	while (i--)
 	{
-		
-		rules->philo->id[i] = i;
+		rules->philo[i].id = i + 1;
 		rules->philo->info = rules;
-		rules->philo->fork[i] = i;
+		// rules->philo->fork_one[i] = i;
 	}
 }
 
@@ -45,33 +45,55 @@ int	init(t_data *rules, int ac, char **av)
 
 
 
+unsigned long	timeInMs(void)
+{
+	struct timeval	now;
+
+	gettimeofday(&now, NULL);
+	return (now.tv_sec * 1000 + now.tv_usec / 1000);
+}
+
 void*	routine(void* arg)
 {
+	t_philo *philo;
+	// int	i;
+
+	philo  = (t_philo *)arg;
+
+	// i = rules->nb_philo;
+	// for ()
 	// if (!arg)
 	// 	return 0 ;
-	// t_philo *philo;
-	// philo  = (t_philo *)arg;
-	// printf("%d\n",philo->fork[1]);
-	// // (void *)i; 
+	
+	// i = *(int *)arg;
 
-	// while (true)
-	// {
-	// 	printf("")
-	// }
-	// return NULL;
+	while (true)
+	{
+	pthread_mutex_lock (&);
+	// printf("%d\n",philo->id[2]);
+	// 	sleep(1);
+	// for (int j = 0; j < 5; j++)
+		printf("philo number %d died\n", philo->id[--i]);
+	pthread_mutex_unlock (&s->print);
+	}
+
+	return NULL;
 }
 
 int	create_threads(t_data *rules)
 {
 	int	i;
 	i = rules->philo->info->nb_philo;
+	// printf("%d\n", i);
 	// rules->philo->id = 10;
+	// for (int j = 0; j < 5; j++)
+	// 	printf("philo number %d died\n", rules->philo->id[j]);
 	while (i--)
-		if (pthread_create(&rules->philo->t[i], NULL, &routine, rules->philo))
-			return (1);
+		if (pthread_create(&rules->philo->t[i], NULL, &routine, rules))
+			perror("Failed to create thread");
 	i = rules->philo->info->nb_philo;
 	while (i--)
-		if (pthread_join(rules->philo->t[i], (void *)rules->philo))
+		if (pthread_join(rules->philo->t[i], NULL))
 			return (1);
 	return (0);
 }
@@ -80,14 +102,16 @@ int	main(int ac, char **av)
 {
 	t_data		rules;
 
-	if (parse(ac, av) == 0)
+	if (parse(ac, av) == 0){
 		return (ft_error(),0);
-	if (!init(&rules, ac, av))
+	}
+	init_mutex(&rules);
+
+	if (!init(&rules, ac, av)){
 		return (ft_error(),0);
-	// for (int i = 0; i < 5; i++)
-	// 	printf("%d\n", rules.philo->id[i]);
+	}
+	// for (int j = 0; j < 5; j++)
+	// 	printf("philo number %d died\n", rules.philo->id[j]);
 	create_threads(&rules);
-	
-	// printf("%d\n", rules.nb_philo);
 	// rules.nb_philo
 }

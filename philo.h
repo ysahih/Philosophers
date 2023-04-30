@@ -8,6 +8,10 @@
 # include <pthread.h>
 #include <time.h>
 #include <stdbool.h>
+#include<sys/time.h>
+
+
+
 
 typedef struct	s_data
 {
@@ -24,8 +28,9 @@ typedef struct	s_data
 
 typedef struct s_philo
 {
-	int			id[200];
-	int			fork[200];
+	int			id;
+	int			*fork_one;
+	int			fork_two;
 	pthread_t	t[200];
 	t_data		*info;
 
