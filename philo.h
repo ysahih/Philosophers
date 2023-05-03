@@ -9,7 +9,7 @@
 #include <time.h>
 #include <stdbool.h>
 #include<sys/time.h>
-
+#include<limits.h>
 
 
 
@@ -29,7 +29,7 @@ typedef struct	s_data
 typedef struct s_philo
 {
 	int			id;
-	int			*fork_one;
+	int			fork_one;
 	int			fork_two;
 	pthread_t	t[200];
 	t_data		*info;
