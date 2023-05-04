@@ -16,23 +16,24 @@
 typedef struct	s_data
 {
 	int 			nb_philo;
-	int				to_die;
-	int 			to_eat;
-	int 			to_sleep;
+	unsigned long	to_die;
+	unsigned long	to_eat;
+	unsigned long	to_sleep;
+	unsigned long	last_meal;
 	int 			nb_eat;
 	struct s_philo	*philo;
-	pthread_mutex_t	fork[200];
+	pthread_mutex_t	*fork;
 	pthread_mutex_t	print;
 
 } t_data;
 
 typedef struct s_philo
 {
-	int			id;
-	int			fork_one;
-	int			fork_two;
-	pthread_t	t[200];
-	t_data		*info;
+	int				id;
+	pthread_mutex_t	fork_one;
+	pthread_mutex_t	fork_two;
+	pthread_t		t[200];
+	t_data			*info;
 
 } t_philo;
 
