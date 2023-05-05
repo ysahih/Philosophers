@@ -21,7 +21,8 @@ typedef struct	s_data
 	unsigned long	to_eat;
 	unsigned long	to_sleep;
 	unsigned long	last_meal;
-	struct s_philo	*philo;
+	unsigned long	start;
+	// struct s_philo	*philo;
 	pthread_mutex_t	print;
 
 } t_data;

@@ -51,13 +51,13 @@ int	init_mutex(t_philo *philo)
 	return (0);
 }
 
-// unsigned long	timeInMs(void)
-// {
-// 	struct timeval	now;
+unsigned long	timeInMs(void)
+{
+	struct timeval	now;
 
-// 	gettimeofday(&now, NULL);
-// 	return (now.tv_sec * 1000 + now.tv_usec / 1000);
-// }
+	gettimeofday(&now, NULL);
+	return (now.tv_sec * 1000 + now.tv_usec / 1000);
+}
 
 t_philo	*init_philos(t_data *rules, int id)
 {
@@ -84,101 +84,123 @@ t_data	*store_up(int ac, char **av)
 	rules->to_die = ft_atoi(av[2]);
 	rules->to_eat = ft_atoi(av[3]);
 	rules->to_sleep = ft_atoi(av[4]);
+	rules->last_meal = timeInMs();
+	rules->start = timeInMs();
 	if (ac == 6)
 		rules->nb_eat = ft_atoi(av[5]);
 	else if (ac == 5)
 		rules->nb_eat = -1;
-	// init_philos(rules);
 	return (rules);
 }
 
-// void	feed_philo(t_philo *philo)
-// {
+void	feed_philo(t_philo *philo)
+{
 	
-// 	philo->info->last_meal = timeInMs();
-    
-//     pthread_mutex_lock(&philo->print);
-//     printf("%lu Philosopher %d is eating\n", timeInMs(), philo->id);
-//     pthread_mutex_unlock(&philo->print);
-// 	usleep(philo->info->to_eat * 1000);
+	philo->info->last_meal = timeInMs();
 	
-// }
+	pthread_mutex_lock(&philo->info->print);
+	printf("%lu Philosopher %d is eating\n", timeInMs() - philo->info->start, philo->id);
+	pthread_mutex_unlock(&philo->info->print);
+	usleep(philo->info->to_eat * 1000);
+	
+}
 
-// bool	philos_alive(t_philo *philo)
-// {
-// 	unsigned long	time_since_last_meal;
+bool	philos_alive(t_philo *philo)
+{
+	unsigned long	time_since_last_meal;
 
-// 	time_since_last_meal = timeInMs() - philo->info->last_meal;
-// 	if (time_since_last_meal > philo->info->to_eat)
-// 	{
-// 		pthread_mutex_lock(&philo->print);
-// 		printf("%lu Philosopher %d died\n", timeInMs(), philo->id);
-// 		pthread_mutex_unlock(&philo->print);
-// 		return (false);
-// 	}
-// 	return (true);
-// }
-
-// void*	routine(void* arg)
-// {
-// 	t_philo	*philo;
-// 	int		id;
-// 	philo = (t_philo *)arg;
-// 	id = philo->id;
-
-// 	int	fork1 = id;
-// 	int	fork2 = (id + 1) % philo->info->nb_philo;
-
-// 	puts("here");
-
-// 	while (true) {
-//         if (!philos_alive(philo)) {
-//             return 0;
-//         }
-//         pthread_mutex_lock(&philo->fork[fork1]);
-//         pthread_mutex_lock(&philo->fork[fork2]);
-
-//         pthread_mutex_lock(&philo->print);
-//         printf("%lu Philosopher %d has taken a fork\n", timeInMs(), philo->id);
-//         printf("%lu Philosopher %d has taken a fork\n", timeInMs(), philo->id);
-//         pthread_mutex_unlock(&philo->print);
-
-// 		feed_philo(philo);
-
-//         pthread_mutex_unlock(&philo->fork[fork1]);
-//         pthread_mutex_unlock(&philo->fork[fork2]);
-
-//         pthread_mutex_lock(&philo->print);
-//         printf("%lu Philosopher %d is sleeping\n", timeInMs(), philo->id );
-//         pthread_mutex_unlock(&philo->print);
-//         usleep(philo->info->to_sleep * 1000);
-
-// 		pthread_mutex_lock(&philo->print);
-//         printf("%lu Philosopher %d is thinking\n", timeInMs(), philo->id );
-//         pthread_mutex_unlock(&philo->print);
-
-//     }
-//     return NULL;
-// }
+	time_since_last_meal = timeInMs() - philo->info->last_meal;
+	if (time_since_last_meal > philo->info->to_eat)
+	{
+		pthread_mutex_lock(&philo->info->print);
+		printf("%lu Philosopher %d died\n", timeInMs() - philo->info->start, philo->id);
+		pthread_mutex_unlock(&philo->info->print);
+		return (false);
+	}
+	return (true);
+}
 
 
-// int	create_threads(t_data *rules)
-// {
-// 	int	i;
-// 	i = rules->nb_philo;
+void	feed_odd(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->next->fork);
+	pthread_mutex_lock(&philo->fork);
+	pthread_mutex_lock(&philo->info->print);
+	printf("%lu Philosopher %d has taken a fork\n", timeInMs() - philo->info->start, philo->id);
+	printf("%lu Philosopher %d has taken a fork\n", timeInMs() - philo->info->start, philo->id);
+	pthread_mutex_unlock(&philo->info->print);
 
-// 	while (i--){
-// 		t_philo *philo = malloc (sizeof(t_philo));
-// 		philo = &rules->philo[i];
-// 		if (pthread_create(&rules->philo->t[i], NULL, &routine, (void *)philo))
-// 			perror("Failed to create thread");
-// 	}
-// 	i = rules->nb_philo;
-// 	while (i--)
-// 		if (pthread_join(rules->philo->t[i], NULL))
-// 			return (1);
-// 	return (0);
-// }
+	feed_philo(philo);
+
+	pthread_mutex_unlock(&philo->next->fork);	
+	pthread_mutex_unlock(&philo->fork);
+}
+
+void*	routine(void* arg)
+{
+	t_philo	*philo;
+	int		id;
+
+	philo = (t_philo *)arg;
+	id = philo->id;
+
+	while (true) 
+	{
+		if (!philos_alive(philo)) {
+			return 0;
+		}
+		if (philo->id % 2 != 0)
+			feed_odd(philo);
+		else
+		{
+			usleep(50);
+			pthread_mutex_lock(&philo->fork);
+			pthread_mutex_lock(&philo->next->fork);
+
+			pthread_mutex_lock(&philo->info->print);
+			printf("%lu Philosopher %d has taken a fork\n", timeInMs() - philo->info->start, philo->id);
+			printf("%lu Philosopher %d has taken a fork\n", timeInMs() - philo->info->start, philo->id);
+			pthread_mutex_unlock(&philo->info->print);
+
+			feed_philo(philo);
+
+			pthread_mutex_unlock(&philo->fork);
+			pthread_mutex_unlock(&philo->next->fork);
+		}
+
+		pthread_mutex_lock(&philo->info->print);
+		printf("%lu Philosopher %d is sleeping\n", timeInMs() - philo->info->start, philo->id );
+		pthread_mutex_unlock(&philo->info->print);
+		usleep(philo->info->to_sleep * 1000);
+
+		pthread_mutex_lock(&philo->info->print);
+		printf("%lu Philosopher %d is thinking\n", timeInMs() - philo->info->start, philo->id );
+		pthread_mutex_unlock(&philo->info->print);
+
+	}
+	return NULL;
+}
+
+
+int	create_threads(t_philo *philo)
+{
+	int	i;
+	i = philo->info->nb_philo;
+
+	while (i--){
+		// t_philo *philo = malloc (sizeof(t_philo));
+		// philo = &rules->philo[i];
+		if (pthread_create(&philo->t, NULL, &routine, (void *)philo))
+			perror("Failed to create thread");
+		philo = philo->next;
+	}
+	i = philo->info->nb_philo;
+	while (i--)
+		if (pthread_join(philo->t, NULL))
+			return (1);
+		philo = philo->next;
+	return (0);
+}
 
 t_philo	*list_philos(t_data *rules)
 {
@@ -199,15 +221,15 @@ t_philo	*list_philos(t_data *rules)
 	return (philo);
 }
 
-// void	ft_test(t_philo	*philo)
-// {
-// 	int i = philo->info->nb_philo;
-// 	while (philo)
-// 	{
-// 		printf("%d\n", philo->id);
-// 		philo = philo->next;
-// 	}
-// }
+void	ft_test(t_philo	*philo)
+{
+	int i = philo->info->nb_philo;
+	while (i--)
+	{
+		printf("%d\n", philo->id);
+		philo = philo->next;
+	}
+}
 
 int	main(int ac, char **av)
 {
@@ -220,18 +242,16 @@ int	main(int ac, char **av)
 	philo = list_philos(rules);
 	if (!philo)
 		return (0);
-	
-	// ft_test(philo);
-	// puts("hh");
-	// philo = init_philos()
-	// // init_mutex(&rules);
-	// // puts("here");
-	// // }
-	// create_threads(&rules);
-	// pthread_mutex_destroy(&rules.philo->print);
-	// int i = rules.nb_philo;
-	// while (i--)
-	// 	pthread_mutex_destroy(&rules.philo->fork[i]);
+	init_mutex(philo);
 
+	create_threads(philo);
+
+	pthread_mutex_destroy(&philo->info->print);
+	int i = philo->info->nb_philo;
+	while (i--)
+	{
+		pthread_mutex_destroy(&philo->fork);
+		philo = philo->next;
+	}
 
 }
