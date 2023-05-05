@@ -22,16 +22,14 @@ typedef struct	s_data
 	unsigned long	last_meal;
 	int 			nb_eat;
 	struct s_philo	*philo;
-	pthread_mutex_t	*fork;
-	pthread_mutex_t	print;
 
 } t_data;
 
 typedef struct s_philo
 {
 	int				id;
-	pthread_mutex_t	fork_one;
-	pthread_mutex_t	fork_two;
+	pthread_mutex_t	print;
+	pthread_mutex_t	*fork;
 	pthread_t		t[200];
 	t_data			*info;
 
