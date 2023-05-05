@@ -50,6 +50,8 @@ int	parse(int ac, char **av)
 			return (0);
 		i++;
 	}
+	if (ft_atoi(av[1]) > 200)
+		return (0);
 	return (1);
 }
 

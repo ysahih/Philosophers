@@ -4,7 +4,7 @@ HDR = philo.h
 
 
 SRCS = main.c\
-parsing.c\
+parsing.c list_utils.c\
 
 RM = rm -rf
 CC = cc

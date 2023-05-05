@@ -16,30 +16,38 @@
 typedef struct	s_data
 {
 	int 			nb_philo;
+	int 			nb_eat;
 	unsigned long	to_die;
 	unsigned long	to_eat;
 	unsigned long	to_sleep;
 	unsigned long	last_meal;
-	int 			nb_eat;
 	struct s_philo	*philo;
+	pthread_mutex_t	print;
 
 } t_data;
 
 typedef struct s_philo
 {
 	int				id;
-	pthread_mutex_t	print;
-	pthread_mutex_t	*fork;
-	pthread_t		t[200];
+	pthread_mutex_t	fork;
+	pthread_t		t;
 	t_data			*info;
+	struct	s_philo	*next;
 
 } t_philo;
 
 
+
+//list utils
+void	circular(t_philo *philo);
+void	ft_lstadd_back(t_philo **lst, t_philo *new);
+t_philo	*ft_lstlast(t_philo *lst);
+
 //parsin
+
 int		ft_atoi(char *str);
 void	ft_error(void);
 int		is_num(char *s);
-int		parse(int ac, char **av);
+int	parse(int ac, char **av);
 
 #endif
