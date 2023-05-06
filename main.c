@@ -94,12 +94,12 @@ t_data	*store_up(int ac, char **av)
 }
 
 
-// void	ft_usleep(t_philo *philo)
-// {
-// 	unsigned long	t;
-
-	
-// }
+void	ft_usleep(unsigned long ms, unsigned long now)
+{
+	usleep(ms * 0.95);
+	while (timeInMs() < (now + ms / 1000))
+		usleep(100);	
+}
 
 void	feed_philo(t_philo *philo)
 {
@@ -108,9 +108,10 @@ void	feed_philo(t_philo *philo)
 	pthread_mutex_lock(&philo->info->print);
 	printf("%lu Philosopher %d is eating\n", timeInMs() - philo->info->start, philo->id);
 	pthread_mutex_unlock(&philo->info->print);
+
+	philo->info->last_meal = timeInMs();
 	usleep(philo->info->to_eat * 1000);
 	
-	philo->info->last_meal = timeInMs();
 }
 
 bool	philos_alive(t_philo *philo)
@@ -121,7 +122,7 @@ bool	philos_alive(t_philo *philo)
 	// printf("%lu\n", time_since_last_meal);
 	// printf("%lu\n", philo->info->to_eat);
 
-	if (time_since_last_meal > philo->info->to_die)
+	if (time_since_last_meal >= philo->info->to_die)
 	{
 		pthread_mutex_lock(&philo->info->print);
 		printf("%lu Philosopher %d died\n", timeInMs() - philo->info->start, philo->id);
@@ -132,19 +133,24 @@ bool	philos_alive(t_philo *philo)
 }
 
 
-void	feed_odd(t_philo *philo)
+void	feed_even(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->next->fork);
 	pthread_mutex_lock(&philo->fork);
+	
 	pthread_mutex_lock(&philo->info->print);
 	printf("%lu Philosopher %d has taken a fork\n", timeInMs() - philo->info->start, philo->id);
+	pthread_mutex_unlock(&philo->info->print);
+
+	pthread_mutex_lock(&philo->next->fork);
+	
+	pthread_mutex_lock(&philo->info->print);
 	printf("%lu Philosopher %d has taken a fork\n", timeInMs() - philo->info->start, philo->id);
 	pthread_mutex_unlock(&philo->info->print);
 
 	feed_philo(philo);
 
-	pthread_mutex_unlock(&philo->next->fork);	
 	pthread_mutex_unlock(&philo->fork);
+	pthread_mutex_unlock(&philo->next->fork);	
 }
 
 void*	routine(void* arg)
@@ -160,28 +166,29 @@ void*	routine(void* arg)
 		if (!philos_alive(philo))
 			return 0;
 
-		if (philo->id % 2 != 0)
-			feed_odd(philo);
+		if (philo->id % 2)
+			feed_even(philo);
 		else
 		{
 			usleep(20);
-			pthread_mutex_lock(&philo->fork);
 			pthread_mutex_lock(&philo->next->fork);
 
 			pthread_mutex_lock(&philo->info->print);
 			printf("%lu Philosopher %d has taken a fork\n", timeInMs() - philo->info->start, philo->id);
+			pthread_mutex_lock(&philo->fork);
 			printf("%lu Philosopher %d has taken a fork\n", timeInMs() - philo->info->start, philo->id);
 			pthread_mutex_unlock(&philo->info->print);
 
 			feed_philo(philo);
 
-			pthread_mutex_unlock(&philo->fork);
 			pthread_mutex_unlock(&philo->next->fork);
+			pthread_mutex_unlock(&philo->fork);
 		}
 
 		pthread_mutex_lock(&philo->info->print);
 		printf("%lu Philosopher %d is sleeping\n", timeInMs() - philo->info->start, philo->id );
 		pthread_mutex_unlock(&philo->info->print);
+		
 		usleep(philo->info->to_sleep * 1000);
 	
 		pthread_mutex_lock(&philo->info->print);
