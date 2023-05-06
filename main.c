@@ -93,16 +93,24 @@ t_data	*store_up(int ac, char **av)
 	return (rules);
 }
 
+
+// void	ft_usleep(t_philo *philo)
+// {
+// 	unsigned long	t;
+
+	
+// }
+
 void	feed_philo(t_philo *philo)
 {
 	
-	philo->info->last_meal = timeInMs();
 	
 	pthread_mutex_lock(&philo->info->print);
 	printf("%lu Philosopher %d is eating\n", timeInMs() - philo->info->start, philo->id);
 	pthread_mutex_unlock(&philo->info->print);
 	usleep(philo->info->to_eat * 1000);
 	
+	philo->info->last_meal = timeInMs();
 }
 
 bool	philos_alive(t_philo *philo)
@@ -110,7 +118,10 @@ bool	philos_alive(t_philo *philo)
 	unsigned long	time_since_last_meal;
 
 	time_since_last_meal = timeInMs() - philo->info->last_meal;
-	if (time_since_last_meal > philo->info->to_eat)
+	// printf("%lu\n", time_since_last_meal);
+	// printf("%lu\n", philo->info->to_eat);
+
+	if (time_since_last_meal > philo->info->to_die)
 	{
 		pthread_mutex_lock(&philo->info->print);
 		printf("%lu Philosopher %d died\n", timeInMs() - philo->info->start, philo->id);
@@ -146,14 +157,14 @@ void*	routine(void* arg)
 
 	while (true) 
 	{
-		if (!philos_alive(philo)) {
+		if (!philos_alive(philo))
 			return 0;
-		}
+
 		if (philo->id % 2 != 0)
 			feed_odd(philo);
 		else
 		{
-			usleep(50);
+			usleep(20);
 			pthread_mutex_lock(&philo->fork);
 			pthread_mutex_lock(&philo->next->fork);
 
@@ -172,12 +183,12 @@ void*	routine(void* arg)
 		printf("%lu Philosopher %d is sleeping\n", timeInMs() - philo->info->start, philo->id );
 		pthread_mutex_unlock(&philo->info->print);
 		usleep(philo->info->to_sleep * 1000);
-
+	
 		pthread_mutex_lock(&philo->info->print);
-		printf("%lu Philosopher %d is thinking\n", timeInMs() - philo->info->start, philo->id );
+		printf("%lu Philosopher %d is thinking\n", timeInMs() - philo->info->start, philo->id);
 		pthread_mutex_unlock(&philo->info->print);
-
 	}
+		
 	return NULL;
 }
 
