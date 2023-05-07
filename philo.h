@@ -20,7 +20,6 @@ typedef struct	s_data
 	unsigned long	to_die;
 	unsigned long	to_eat;
 	unsigned long	to_sleep;
-	unsigned long	last_meal;
 	unsigned long	start;
 	// struct s_philo	*philo;
 	pthread_mutex_t	print;
@@ -30,6 +29,8 @@ typedef struct	s_data
 typedef struct s_philo
 {
 	int				id;
+	unsigned long	last_meal;
+	int				meals_taken;
 	pthread_mutex_t	fork;
 	pthread_t		t;
 	t_data			*info;
