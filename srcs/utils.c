@@ -1,5 +1,4 @@
-#include "philo.h"
-
+#include "../philo.h"
 
 void	ft_free(t_philo *philo)
 {
@@ -33,7 +32,7 @@ void	error_handler(int e)
 {
 	if (e == 1)
 		printf("Failed to create mutex!");
-	if (e == 1)
+	if (e == 2)
 		printf("Failed to create threrad!");
 }
 

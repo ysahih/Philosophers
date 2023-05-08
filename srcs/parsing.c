@@ -1,4 +1,4 @@
-#include "philo.h"
+#include "../philo.h"
 
 int	ft_atoi(char *str)
 {
@@ -23,35 +23,32 @@ int	ft_atoi(char *str)
 	return (res * sign);
 }
 
-int	is_num(char *s)
+int	is_num(char c)
 {
-	int	i;
-
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] < '0' && s[i] > '9')
-			return (0);
-		i++;
-	}
-	return (1);
+	return (c >= '0' && c <= '9');
 }
 
 int	parse(int ac, char **av)
 {
-	int	i;
+	int		i;
+	int		j;
+	char	c;
 
 	if (ac != 5 && ac != 6)
 		return (0);
 	i = 1;
 	while (av[i])
 	{
-		if (!is_num(av[i]) || ft_atoi(av[i]) <= 0)
-			return (0);
+		j = 0;
+		while (av[i][j])
+		{
+			c = av[i][j];
+			if (!is_num(c))
+				return (0);
+			j++;
+		}
 		i++;
 	}
-	if (ft_atoi(av[1]) > 200)
-		return (0);
 	return (1);
 }
 

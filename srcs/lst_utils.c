@@ -1,4 +1,4 @@
-#include "philo.h"
+#include "../philo.h"
 
 t_philo	*ft_lstlast(t_philo *lst)
 {

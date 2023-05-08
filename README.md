@@ -1,3 +1,3 @@
 # Philosophers
 
-on going project..
+I never thoughth philosophy would be so deadly!

@@ -4,8 +4,9 @@ HDR = philo.h
 
 
 SRCS = main.c\
-parsing.c lst_utils.c\
-init.c utils.c\
+srcs/parsing.c srcs/lst_utils.c\
+srcs/init.c srcs/utils.c\
+srcs/philo_life.c srcs/feeding.c\
 
 RM = rm -rf
 CC = cc

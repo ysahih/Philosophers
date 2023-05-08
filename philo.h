@@ -39,6 +39,19 @@ typedef struct s_philo
 } t_philo;
 
 
+//feeding
+void	feed_even(t_philo *philo);
+void	feed_odd(t_philo *philo);
+void	print_status(t_philo *philo );
+void	feed_philo(t_philo *philo);
+
+//philospphers
+void*	routine(void* arg);
+int		create_threads(t_philo *philo);
+bool	philos_full(t_philo *philo);
+bool	philos_alive(t_philo *philo);
+
+
 
 //list utils
 void	circular(t_philo *philo);
@@ -54,7 +67,7 @@ t_data	*store_up(int ac, char **av);
 //parsin
 int		ft_atoi(char *str);
 void	ft_error(void);
-int		is_num(char *s);
+int		is_num(char c);
 int	parse(int ac, char **av);
 
 //utils
