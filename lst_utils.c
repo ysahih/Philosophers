@@ -33,3 +33,23 @@ void	circular(t_philo *philo)
 		tmp = tmp->next;
 	tmp->next = philo;
 }
+
+t_philo	*list_philos(t_data *rules)
+{
+	t_philo	*philo;
+	t_philo	*node;
+	int		i;
+
+	i = 0;
+	philo = NULL;
+	while(i < rules->nb_philo)
+	{
+		node = init_philos(rules, i);
+		if (!node)
+			return (NULL);
+		ft_lstadd_back(&philo, node);
+		i++;
+	}
+	circular(philo);
+	return (philo);
+}
