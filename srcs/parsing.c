@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parsing.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ysahih <ysahih@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/09 00:52:37 by ysahih            #+#    #+#             */
+/*   Updated: 2023/05/09 00:52:38 by ysahih           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../philo.h"
 
 int	ft_atoi(char *str)
@@ -32,7 +44,6 @@ int	parse(int ac, char **av)
 {
 	int		i;
 	int		j;
-	char	c;
 
 	if (ac != 5 && ac != 6)
 		return (0);
@@ -42,8 +53,7 @@ int	parse(int ac, char **av)
 		j = 0;
 		while (av[i][j])
 		{
-			c = av[i][j];
-			if (!is_num(c))
+			if (!is_num(av[i][j]))
 				return (0);
 			j++;
 		}

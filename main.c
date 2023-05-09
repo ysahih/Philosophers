@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ysahih <ysahih@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/09 00:52:49 by ysahih            #+#    #+#             */
+/*   Updated: 2023/05/09 00:59:51 by ysahih           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "philo.h"
 
-void*	routine(void* arg)
+void	*routine(void *arg)
 {
 	t_philo	*philo;
 	int		id;
@@ -14,14 +26,16 @@ void*	routine(void* arg)
 		else
 			feed_even(philo);
 		pthread_mutex_lock(&philo->info->print);
-		printf("%lu Philosopher %d is sleeping\n", timeInMs() - philo->info->start, philo->id );
+		printf("%lu Philosopher %d is sleeping\n",
+			timeinms() - philo->info->start, philo->id);
 		pthread_mutex_unlock(&philo->info->print);
-		ft_usleep(philo->info->to_sleep * 1000, timeInMs());
+		ft_usleep(philo->info->to_sleep * 1000, timeinms());
 		pthread_mutex_lock(&philo->info->print);
-		printf("%lu Philosopher %d is thinking\n", timeInMs() - philo->info->start, philo->id);
+		printf("%lu Philosopher %d is thinking\n",
+			timeinms() - philo->info->start, philo->id);
 		pthread_mutex_unlock(&philo->info->print);
 	}
-	return NULL;
+	return (NULL);
 }
 
 int	main(int ac, char **av)
@@ -35,9 +49,9 @@ int	main(int ac, char **av)
 	philo = list_philos(rules);
 	if (!philo)
 		return (0);
-	if(init_mutex(philo))
+	if (init_mutex(philo))
 		return (error_handler(1), 0);
-	if(create_threads(philo))
+	if (create_threads(philo))
 		return (error_handler(2), 0);
 	while (true)
 	{

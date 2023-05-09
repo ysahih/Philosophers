@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ysahih <ysahih@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/09 00:52:45 by ysahih            #+#    #+#             */
+/*   Updated: 2023/05/09 00:57:16 by ysahih           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../philo.h"
 
 void	ft_free(t_philo *philo)
@@ -18,6 +30,7 @@ void	ft_free(t_philo *philo)
 void	detach(t_philo *philo)
 {
 	int	i;
+
 	i = philo->info->nb_philo;
 	pthread_mutex_destroy(&philo->info->print);
 	while (i--)
@@ -36,7 +49,7 @@ void	error_handler(int e)
 		printf("Failed to create threrad!");
 }
 
-unsigned long	timeInMs(void)
+unsigned long	timeinms(void)
 {
 	struct timeval	now;
 
@@ -47,7 +60,6 @@ unsigned long	timeInMs(void)
 void	ft_usleep(unsigned long ms, unsigned long now)
 {
 	usleep(ms * 0.95);
-	while (timeInMs() < (now + ms / 1000))
-		usleep(100);	
+	while (timeinms() < (now + ms / 1000))
+		usleep(100);
 }
-

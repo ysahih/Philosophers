@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   lst_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ysahih <ysahih@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/05/09 00:52:32 by ysahih            #+#    #+#             */
+/*   Updated: 2023/05/09 00:55:06 by ysahih           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../philo.h"
 
 t_philo	*ft_lstlast(t_philo *lst)
@@ -42,7 +54,7 @@ t_philo	*list_philos(t_data *rules)
 
 	i = 0;
 	philo = NULL;
-	while(i < rules->nb_philo)
+	while (i < rules->nb_philo)
 	{
 		node = init_philos(rules, i);
 		if (!node)
