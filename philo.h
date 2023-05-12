@@ -6,7 +6,7 @@
 /*   By: ysahih <ysahih@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 01:00:02 by ysahih            #+#    #+#             */
-/*   Updated: 2023/05/09 01:05:24 by ysahih           ###   ########.fr       */
+/*   Updated: 2023/05/13 00:12:49 by ysahih           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ typedef struct s_data
 {
 	int				nb_philo;
 	int				nb_eat;
-	int				count;
 	unsigned long	to_die;
 	unsigned long	to_eat;
 	unsigned long	to_sleep;
@@ -40,6 +39,8 @@ typedef struct s_philo
 	int				id;
 	int				meals_taken;
 	unsigned long	last_meal;
+	pthread_mutex_t	meal;
+	pthread_mutex_t	meals;
 	pthread_mutex_t	fork;
 	pthread_t		t;
 	t_data			*info;

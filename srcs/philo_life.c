@@ -6,7 +6,7 @@
 /*   By: ysahih <ysahih@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 00:52:40 by ysahih            #+#    #+#             */
-/*   Updated: 2023/05/09 00:56:50 by ysahih           ###   ########.fr       */
+/*   Updated: 2023/05/13 00:38:41 by ysahih           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,12 @@
 
 bool	philos_alive(t_philo *philo)
 {
-	unsigned long	time_since_last_meal;
+	unsigned long	t;
 
-	time_since_last_meal = timeinms() - philo->last_meal;
-	if (time_since_last_meal > philo->info->to_die)
+	pthread_mutex_lock(&philo->meal);
+	t = timeinms() - philo->last_meal;
+	pthread_mutex_unlock(&philo->meal);
+	if (t > philo->info->to_die)
 	{
 		pthread_mutex_lock(&philo->info->print);
 		printf("%lu Philosopher %d died\n",
@@ -30,11 +32,15 @@ bool	philos_alive(t_philo *philo)
 bool	philos_full(t_philo *philo)
 {
 	int	i;
+	int	m;
 
 	i = philo->info->nb_philo;
 	while (i--)
 	{
-		if (philo->meals_taken < philo->info->nb_eat)
+		pthread_mutex_lock(&philo->meals);
+		m = philo->meals_taken;
+		pthread_mutex_unlock(&philo->meals);
+		if (m < philo->info->nb_eat)
 			return (false);
 		philo = philo->next;
 	}

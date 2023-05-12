@@ -6,7 +6,7 @@
 /*   By: ysahih <ysahih@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 00:52:45 by ysahih            #+#    #+#             */
-/*   Updated: 2023/05/09 00:57:16 by ysahih           ###   ########.fr       */
+/*   Updated: 2023/05/13 00:22:07 by ysahih           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ void	detach(t_philo *philo)
 	int	i;
 
 	i = philo->info->nb_philo;
+	pthread_mutex_unlock(&philo->info->print);
+	pthread_mutex_unlock(&philo->meals);
 	pthread_mutex_destroy(&philo->info->print);
 	while (i--)
 	{

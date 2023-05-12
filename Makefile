@@ -11,13 +11,12 @@ srcs/philo_life.c srcs/feeding.c\
 RM = rm -rf
 CC = cc
 OBJS = $(SRCS:%.c=%.o)
-CFLAGS = -Wall -Wextra -Werror -pthread
-
+CFLAGS = -Wall -Wextra -Werror -fsanitize=thread -g
 all : $(NAME)
 
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) -o $(NAME) $^
+	$(CC) $(CFLAGS) -o $(NAME) $^ -lpthread
 
 
 %.o: %.c $(HDR)

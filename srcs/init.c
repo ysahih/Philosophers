@@ -6,7 +6,7 @@
 /*   By: ysahih <ysahih@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 00:52:29 by ysahih            #+#    #+#             */
-/*   Updated: 2023/05/09 00:56:50 by ysahih           ###   ########.fr       */
+/*   Updated: 2023/05/13 00:29:11 by ysahih           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,10 @@ int	init_mutex(t_philo *philo)
 	while (i--)
 	{
 		if (pthread_mutex_init(&philo->fork, NULL))
+			return (1);
+		if (pthread_mutex_init(&philo->meal, NULL))
+			return (1);
+		if (pthread_mutex_init(&philo->meals, NULL))
 			return (1);
 		philo = philo->next;
 	}
@@ -53,11 +57,12 @@ t_data	*store_up(int ac, char **av)
 		return (ft_error(), NULL);
 	rules = malloc(sizeof(t_data));
 	rules->nb_philo = ft_atoi(av[1]);
+	if (rules->nb_philo == 0)
+		return (NULL);
 	rules->to_die = ft_atoi(av[2]);
 	rules->to_eat = ft_atoi(av[3]);
 	rules->to_sleep = ft_atoi(av[4]);
 	rules->start = timeinms();
-	rules->count = 0;
 	if (ac == 6)
 		rules->nb_eat = ft_atoi(av[5]);
 	else if (ac == 5)
