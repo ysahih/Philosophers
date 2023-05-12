@@ -6,14 +6,13 @@
 /*   By: ysahih <ysahih@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 00:52:37 by ysahih            #+#    #+#             */
-/*   Updated: 2023/05/09 00:52:38 by ysahih           ###   ########.fr       */
+/*   Updated: 2023/05/13 00:48:39 by ysahih           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-int	ft_atoi(char *str)
-{
+int	ft_atoi(char *str){
 	int	i;
 	int	sign;
 	int	res;

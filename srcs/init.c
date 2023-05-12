@@ -6,14 +6,13 @@
 /*   By: ysahih <ysahih@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 00:52:29 by ysahih            #+#    #+#             */
-/*   Updated: 2023/05/13 00:29:11 by ysahih           ###   ########.fr       */
+/*   Updated: 2023/05/13 00:48:47 by ysahih           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-int	init_mutex(t_philo *philo)
-{
+int	init_mutex(t_philo *philo){
 	int	i;
 
 	i = philo->info->nb_philo;

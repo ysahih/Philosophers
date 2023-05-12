@@ -6,14 +6,13 @@
 /*   By: ysahih <ysahih@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 00:52:45 by ysahih            #+#    #+#             */
-/*   Updated: 2023/05/13 00:22:07 by ysahih           ###   ########.fr       */
+/*   Updated: 2023/05/13 00:48:28 by ysahih           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-void	ft_free(t_philo *philo)
-{
+void	ft_free(t_philo *philo){
 	int		n;
 	t_philo	*tmp;
 

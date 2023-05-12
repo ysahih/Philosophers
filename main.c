@@ -6,7 +6,7 @@
 /*   By: ysahih <ysahih@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 00:52:49 by ysahih            #+#    #+#             */
-/*   Updated: 2023/05/12 23:40:14 by ysahih           ###   ########.fr       */
+/*   Updated: 2023/05/13 00:48:23 by ysahih           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,7 @@ void	*routine(void *arg)
 	return (NULL);
 }
 
-int	main(int ac, char **av)
-{
+int	main(int ac, char **av){
 	t_data	*rules;
 	t_philo	*philo;
 

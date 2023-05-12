@@ -6,14 +6,13 @@
 /*   By: ysahih <ysahih@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/09 00:52:23 by ysahih            #+#    #+#             */
-/*   Updated: 2023/05/13 00:38:28 by ysahih           ###   ########.fr       */
+/*   Updated: 2023/05/13 00:48:51 by ysahih           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../philo.h"
 
-void	feed_philo(t_philo *philo)
-{
+void	feed_philo(t_philo *philo){
 	pthread_mutex_lock(&philo->meal);
 	philo->last_meal = timeinms();
 	pthread_mutex_unlock(&philo->meal);
